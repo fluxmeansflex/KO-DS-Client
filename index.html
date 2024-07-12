@@ -1,0 +1,119 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="KO Client is a lightweight desktop client for DEADSHOT.io."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="icon" type="image/webp" href="./assets/favicon.ico"><title>KO Client | DEADSHOT.io</title><script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script><script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script></head><body class="flex min-h-svh items-center justify-center overflow-x-hidden bg-[#1a0f12] p-0 font-[Manrope] text-white antialiased selection:bg-[#ff4757] selection:text-white sm:p-5"><div class="grid min-h-svh place-items-center px-6 text-center text-3xl font-black uppercase tracking-[-0.05em] text-white sm:hidden">WINDOWS SUPPORT ONLY</div><main class="relative isolate hidden overflow-hidden bg-[#2b161b] shadow-2xl sm:grid sm:h-[90svh] sm:w-[95vw] sm:grid-cols-[0.68fr_1.32fr] sm:rounded-[40px]"><div class="absolute inset-0 -z-20 bg-[#1a0f12]"></div><img src="assets/bg/bg.webp" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-45 mix-blend-screen"> <img src="assets/bg/bg1.webp" alt="" class="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover opacity-45 mix-blend-screen"><div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#1a0f12_0%,rgba(26,15,18,0.88)_42%,rgba(26,15,18,0.15)_100%)]"></div><div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_48%,rgba(255,84,66,0.2),transparent_24%)]"></div><section class="relative z-10 flex flex-col bg-[#1f1013] py-9 sm:m-5 sm:mr-0 sm:rounded-[30px] sm:py-10"><div class="my-auto max-w-xl"><p class="mb-[15px] inline-flex rounded-[20px] bg-white px-[15px] py-[5px] text-sm font-semibold text-[#e54d42]">DEADSHOT.io desktop client</p><div class="flex items-center gap-4"><img src="assets/favicon.png" alt="KO Client logo" class="size-14 rounded-[14px] object-cover outline outline-1 -outline-offset-1 outline-white/10 shadow-[0_0_32px_rgba(255,48,38,0.38)]"><h1 class="text-balance text-5xl font-bold leading-[0.9] tracking-[-0.06em] sm:text-7xl">KO Client.</h1></div><p class="mt-5 max-w-[300px] text-pretty text-sm leading-relaxed text-white/90 sm:max-w-md sm:text-base">Lightweight DEADSHOT.io client with stable FPS, low CPU/RAM usage, exclusive KO skins, skin unlock, UI mods, and ad/tracker blocking.</p><div class="mt-6 h-auto w-full"><div class="relative h-64 overflow-hidden rounded-[25px] bg-[#2b161b]"><img src="assets/preview/preview-1.png" alt="KO Client main screen preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-100 transition-[opacity,scale] duration-300 ease-out"> <img src="assets/preview/preview-2.png" alt="KO Client skin locker preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,scale] duration-300 ease-out"> <img src="assets/preview/preview-3.png" alt="KO Client custom UI preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,scale] duration-300 ease-out"> <img src="assets/preview/preview-4.png" alt="KO Client custom scope preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,scale] duration-300 ease-out"> <img src="assets/preview/preview-5.png" alt="KO Client SMG holo smaller preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,scale] duration-300 ease-out"> <img src="assets/preview/preview-6.png" alt="KO Client SMG holo smaller second preview" class="preview-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,scale] duration-300 ease-out"><div class="absolute inset-0 bg-gradient-to-t from-[#1a0f12]/70 via-transparent to-black/20"></div><p id="preview-title" class="absolute left-3 top-3 text-sm font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">Main Screen</p><div class="absolute right-3 top-3 z-50 flex gap-1.5" aria-label="Preview carousel controls"><button id="preview-prev" type="button" class="grid size-8 place-items-center rounded-full bg-[#3b1e25] text-sm font-bold text-white transition-[scale,background-color] duration-150 ease-out hover:bg-[#4a2a30] active:scale-[0.96]" aria-label="Previous preview">‹</button><button id="preview-next" type="button" class="grid size-8 place-items-center rounded-full bg-[#ff4757] text-sm font-bold text-white transition-[scale,background-color] duration-150 ease-out hover:bg-[#ff6b76] active:scale-[0.96]" aria-label="Next preview">›</button></div><div class="absolute bottom-3 left-3 flex gap-1.5"><button type="button" class="preview-dot h-1.5 w-5 rounded-full bg-white transition-[background-color,width] duration-150 ease-out" aria-label="Show main screen preview"></button><button type="button" class="preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out" aria-label="Show locker preview"></button><button type="button" class="preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out" aria-label="Show custom UI preview"></button><button type="button" class="preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out" aria-label="Show custom scope preview"></button><button type="button" class="preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out" aria-label="Show SMG holo smaller preview"></button><button type="button" class="preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out" aria-label="Show second SMG holo smaller preview"></button></div></div></div><div class="relative z-50 mt-9 flex flex-col gap-3 sm:flex-row"><a href="https://github.com/fluxmeansflex/KO-DS-Client/releases/download/1.0.0/KO.Client.-.DEADSHOT.io-Setup.exe" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-3 rounded-full bg-[#ff4757] px-5 py-3 text-sm font-semibold text-white transition-[scale,background-color] duration-150 ease-out hover:bg-[#ff6b76] active:scale-[0.96]">Download<span>→</span></a><button id="open-discord" type="button" class="inline-flex items-center justify-center gap-3 rounded-full bg-[#3b1e25] px-5 py-3 text-sm font-semibold text-white transition-[scale,background-color] duration-150 ease-out hover:bg-[#4a2a30] active:scale-[0.96]"><img src="https://cdn.simpleicons.org/discord" alt="" class="size-4">Join Discord</button><a href="https://github.com/fluxmeansflex/KO-DS-Client/" target="_blank" rel="noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-semibold text-black transition-[scale,background-color] duration-150 ease-out hover:bg-gray-100 active:scale-[0.96]" aria-label="Open KO Client GitHub repository"><img src="https://cdn.simpleicons.org/github" alt="" class="size-5"></a></div></div></section><section class="pointer-events-none absolute inset-0 z-20 overflow-visible"><img src="assets/bg/rarityOval.png" alt="" class="pointer-events-none absolute left-[58%] top-1/2 h-[118%] w-[70vw] -translate-x-1/2 -translate-y-1/2 object-contain opacity-80 mix-blend-screen"><model-viewer id="weapon-model" src="assets/guns/awp.glb" alt="KO AWP weapon model" camera-controls disable-pan touch-action="pan-y" shadow-intensity="1.2" shadow-softness="0.7" environment-image="neutral" exposure="1.1" camera-orbit="0.9062987206567279rad 2.1403422319889422rad 3.784688139146512m" camera-target="-0.013475668616592884m 0.09903415664171104m 0.13385421978236345m" field-of-view="11.03638323514326deg" min-camera-orbit="auto auto 0m" max-camera-orbit="auto auto 1000%" min-field-of-view="1deg" max-field-of-view="120deg" zoom-sensitivity="1.5" interaction-prompt="none" class="pointer-events-auto absolute w-[66%] left-[34%] right-0 top-1/2 z-20 h-[118%] -translate-y-1/2 [--progress-bar-color:#ff493d]" style="background-color:unset" loading="eager"></model-viewer><div class="pointer-events-auto absolute right-[4.25vw] top-1/2 z-50 flex -translate-y-1/2 flex-col items-center gap-2.5"><p class="text-2xl font-black tracking-[-0.05em] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">Equipped</p><button type="button" class="weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]" style="background-image:url(assets/bg/rarity.png)" data-model="assets/guns/ar2.glb" data-skin="assets/compressed/koar0.webp" data-label="KO / AR-2" aria-label="Select KO AR-2" aria-pressed="false"><img src="assets/compressed/koar.webp" alt="KO AR-2" class="h-[78px] w-full object-contain transition-[rotate,scale] duration-150 ease-out group-hover:rotate-[-7deg] group-hover:scale-110"><span class="text-[11px] font-black uppercase leading-none text-white">KO</span><span class="text-[9px] font-black leading-none text-[#63ff3f]">Flawless</span></button><button type="button" class="weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_2px_rgba(255,71,87,0.9),0_0_22px_rgba(255,71,87,0.25)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]" style="background-image:url(assets/bg/rarity.png)" data-model="assets/guns/awp.glb" data-skin="assets/compressed/koawp0.webp" data-label="KO / AWP" aria-label="Select KO AWP" aria-pressed="true"><img src="assets/compressed/koawp.webp" alt="KO AWP" class="h-[78px] w-full object-contain transition-[rotate,scale] duration-150 ease-out group-hover:rotate-[-7deg] group-hover:scale-110"><span class="text-[11px] font-black uppercase leading-none text-white">KO</span><span class="text-[9px] font-black leading-none text-[#63ff3f]">Flawless</span></button><button type="button" class="weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]" style="background-image:url(assets/bg/rarity.png)" data-model="assets/guns/shotgun.glb" data-skin="assets/compressed/koshotgun0.webp" data-label="KO / Shotgun" aria-label="Select KO Shotgun" aria-pressed="false"><img src="assets/compressed/koshotgun.webp" alt="KO Shotgun" class="h-[78px] w-full object-contain transition-[rotate,scale] duration-150 ease-out group-hover:rotate-[-7deg] group-hover:scale-110"><span class="text-[11px] font-black uppercase leading-none text-white">KO</span><span class="text-[9px] font-black leading-none text-[#63ff3f]">Flawless</span></button><button type="button" class="weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]" style="background-image:url(assets/bg/rarity.png)" data-model="assets/guns/vector.glb" data-skin="assets/compressed/kosmg0.webp" data-label="KO / Vector" aria-label="Select KO Vector" aria-pressed="false"><img src="assets/compressed/kosmg.webp" alt="KO Vector" class="h-[78px] w-full object-contain transition-[rotate,scale] duration-150 ease-out group-hover:rotate-[-7deg] group-hover:scale-110"><span class="text-[11px] font-black uppercase leading-none text-white">KO</span><span class="text-[9px] font-black leading-none text-[#63ff3f]">Flawless</span></button></div></section></main><dialog id="discord-dialog" class="z-[9999] m-auto w-[min(92vw,44rem)] overflow-hidden border-0 bg-transparent p-0 text-white backdrop:bg-black/85"><div class="relative overflow-hidden rounded-[40px] bg-[#2b161b] p-5 shadow-2xl"><button id="close-discord" type="button" class="absolute right-8 top-8 z-20 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-[#3b1e25] px-4 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[scale,background-color] duration-150 ease-out hover:bg-[#4a2a30] active:scale-[0.96]" aria-label="Close Discord">Close</button><div id="discord-content" class="min-h-[22rem]"><p class="p-5 text-sm text-[#aaa]">Loading guild status...</p></div></div></dialog><script>const initTilt = () => {
+				document.querySelectorAll('a, button').forEach((element) => element.classList.add('js-tilt'));
+				if (window.jQuery?.fn?.tilt) {
+					$('.js-tilt').tilt({ scale: 1.2 });
+				}
+			};
+			initTilt();
+			const previewTitles = [
+				'Main Screen',
+				'Skin Unlock / KO Locker',
+				'Custom UI',
+				'Custom Scope',
+				'SMG Holo Smaller',
+				'SMG Holo Smaller II',
+			];
+			const previewSlides = [...document.querySelectorAll('.preview-slide')];
+			const previewDots = [...document.querySelectorAll('.preview-dot')];
+			const previewTitle = document.querySelector('#preview-title');
+			let previewIndex = 0;
+			const showPreview = (index) => {
+				previewIndex = (index + previewSlides.length) % previewSlides.length;
+				previewSlides.forEach((slide, slideIndex) => {
+					slide.classList.toggle('opacity-100', slideIndex === previewIndex);
+					slide.classList.toggle('opacity-0', slideIndex !== previewIndex);
+					slide.classList.toggle('scale-[1.02]', slideIndex === previewIndex);
+				});
+				previewDots.forEach((dot, dotIndex) => {
+					dot.className = dotIndex === previewIndex
+						? 'preview-dot h-1.5 w-5 rounded-full bg-white transition-[background-color,width] duration-150 ease-out'
+						: 'preview-dot h-1.5 w-1.5 rounded-full bg-white/35 transition-[background-color,width] duration-150 ease-out';
+				});
+				previewTitle.textContent = previewTitles[previewIndex];
+			};
+			document.querySelector('#preview-prev').addEventListener('click', () => showPreview(previewIndex - 1));
+			document.querySelector('#preview-next').addEventListener('click', () => showPreview(previewIndex + 1));
+			previewDots.forEach((dot, index) => dot.addEventListener('click', () => showPreview(index)));
+			const weaponModel = document.querySelector('#weapon-model');
+			const applyTexture = async (viewer, textureUrl) => {
+				const texture = await viewer.createTexture(textureUrl, 'image/webp');
+				viewer.model.materials.forEach((material) =>
+					material.pbrMetallicRoughness.baseColorTexture.setTexture(texture),
+				);
+			};
+			weaponModel.addEventListener('load', () => applyTexture(weaponModel, 'assets/compressed/koawp0.webp'), { once: true });
+			document.querySelectorAll('.weapon-icon').forEach((button) => {
+				button.addEventListener('click', () => {
+					const { model, skin } = button.dataset;
+					weaponModel.addEventListener('load', () => applyTexture(weaponModel, skin), { once: true });
+					weaponModel.setAttribute('src', model);
+					document.querySelectorAll('.weapon-icon').forEach((item) => {
+						item.className = 'weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_1px_rgba(255,255,255,0.08)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]';
+						item.setAttribute('aria-pressed', 'false');
+					});
+					button.className = 'weapon-icon group grid h-[104px] w-[118px] place-items-center overflow-hidden rounded-[6px] bg-[#1f1013] bg-cover bg-center px-1.5 pb-1 pt-1.5 text-center shadow-[0_0_0_2px_rgba(255,71,87,0.9),0_0_22px_rgba(255,71,87,0.25)] transition-[scale,box-shadow] duration-150 ease-out active:scale-[0.96]';
+					button.setAttribute('aria-pressed', 'true');
+				});
+			});
+			const discordDialog = document.querySelector('#discord-dialog');
+			const discordContent = document.querySelector('#discord-content');
+			let discordLoaded = false;
+			const renderDiscord = (guild) => {
+				const visibleMembers = guild.members.slice(0, 6);
+				const hiddenMembers = Math.max(guild.members.length - visibleMembers.length, 0);
+				const banner = document.createElement('section');
+				banner.className = 'relative min-h-[300px] overflow-hidden rounded-[30px] bg-gradient-to-r from-[#e54d42] to-[#b83b45] p-[30px]';
+				banner.innerHTML = `<div class="relative z-10 flex h-full max-w-[23rem] flex-col justify-between gap-10"><div><span class="inline-flex rounded-[20px] bg-white px-[15px] py-[5px] text-sm font-semibold text-[#e54d42]">${guild.name} community</span><h2 class="mt-5 text-balance text-5xl font-bold tracking-[-0.06em] text-white">Join the squad.</h2><p class="mt-3 max-w-[19rem] text-pretty text-sm leading-relaxed text-white/90"><span class="tabular-nums font-bold text-white">${guild.presence_count}</span> players are online. Drop into voice rooms, get updates, and play DEADSHOT.io with KO.</p></div><a href="${guild.instant_invite}" target="_blank" rel="noreferrer" class="inline-flex w-max items-center justify-center rounded-[15px] bg-white px-[15px] py-2 text-sm font-semibold text-black transition-[scale,background-color] duration-150 ease-out hover:bg-gray-100 active:scale-[0.96]">Join now</a></div><img src="https://cdn.simpleicons.org/discord/ffffff" alt="" class="pointer-events-none absolute -right-8 bottom-0 z-0 h-[112%] w-auto opacity-20 [mask-image:linear-gradient(to_left,black_68%,transparent)]" />`;
+				const channels = document.createElement('div');
+				channels.className = 'mt-5';
+				channels.innerHTML = '<p class="mb-3 text-lg font-semibold text-white">Voice rooms</p>';
+				const channelList = document.createElement('div');
+				channelList.className = 'flex flex-wrap gap-2.5';
+				guild.channels.sort((a, b) => a.position - b.position).forEach((channel) => {
+					const link = document.createElement('a');
+					link.href = `https://discord.com/channels/${guild.id}/${channel.id}`;
+					link.target = '_blank';
+					link.rel = 'noreferrer';
+					link.className = 'rounded-full bg-[#1f1013] px-4 py-2 text-sm font-medium text-white/80 transition-[scale,background-color,color] duration-150 ease-out hover:bg-[#3b1e25] hover:text-white active:scale-[0.96]';
+					link.textContent = channel.name;
+					channelList.append(link);
+				});
+				channels.append(channelList);
+				const members = document.createElement('div');
+				members.className = 'mt-5 flex items-center justify-between gap-5 rounded-[25px] bg-[#1f1013] p-2.5 pl-5 transition-[background-color] duration-150 ease-out hover:bg-[#3b1e25]';
+				members.innerHTML = '<div><p class="text-sm font-medium text-white">In server now</p><p class="mt-0.5 text-xs text-white/50">Live Discord presence</p></div>';
+				const memberStack = document.createElement('div');
+				memberStack.className = 'flex -space-x-2 pr-1';
+				visibleMembers.forEach((member) => {
+					const avatar = document.createElement('img');
+					avatar.src = member.avatar_url;
+					avatar.alt = member.username;
+					avatar.className = 'size-10 rounded-full object-cover outline outline-1 -outline-offset-1 outline-white/10 shadow-[0_0_0_3px_rgba(31,16,19,1)]';
+					memberStack.append(avatar);
+				});
+				if (hiddenMembers > 0) {
+					const more = document.createElement('span');
+					more.className = 'grid size-10 place-items-center rounded-full bg-[#ff4757] text-xs font-bold text-white shadow-[0_0_0_3px_rgba(31,16,19,1)]';
+					more.textContent = `+${hiddenMembers}`;
+					memberStack.append(more);
+				}
+				members.append(memberStack);
+				discordContent.replaceChildren(banner, channels, members);
+				initTilt();
+			};
+			const loadDiscord = async () => {
+				try {
+					const response = await fetch('https://discord.com/api/guilds/1517961081480413244/widget.json');
+					if (!response.ok) throw new Error('Discord widget unavailable');
+					renderDiscord(await response.json());
+					discordLoaded = true;
+				} catch {
+					discordContent.innerHTML = '<section class="rounded-[30px] bg-gradient-to-r from-[#e54d42] to-[#b83b45] p-[30px]"><span class="inline-flex rounded-[20px] bg-white px-[15px] py-[5px] text-sm font-semibold text-[#e54d42]">KO community</span><h2 class="mt-5 text-5xl font-bold tracking-[-0.06em] text-white">Join the squad.</h2><a href="https://discord.com/invite/97d7w5nX" target="_blank" rel="noreferrer" class="mt-10 inline-flex rounded-[15px] bg-white px-[15px] py-2 text-sm font-semibold text-black transition-[scale,background-color] duration-150 ease-out hover:bg-gray-100 active:scale-[0.96]">Join now</a></section>';
+					initTilt();
+				}
+			};
+			document.querySelector('#open-discord').addEventListener('click', () => {
+				discordDialog.showModal();
+				if (!discordLoaded) loadDiscord();
+			});
+			document.querySelector('#close-discord').addEventListener('click', () => discordDialog.close());</script></body></html>
