@@ -1,7 +1,7 @@
 ; Build with Inno Setup: ISCC.exe installer.iss
 
 #define AppName "KO Client - DEADSHOT.io"
-#define AppVersion "1.0.0"
+#define AppVersion "1.0.2"
 #define AppExeName "KO Client - DEADSHOT.io.exe"
 
 [Setup]
@@ -13,7 +13,7 @@ DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 OutputDir=dist
-OutputBaseFilename=KO Client - DEADSHOT.io-Setup
+OutputBaseFilename=KO-DS-Setup
 SetupIconFile=assets\favicon.ico
 UninstallDisplayIcon={app}\{#AppExeName}
 Compression=lzma2

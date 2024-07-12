@@ -63,6 +63,8 @@ internal sealed class MainForm : Form
         "shotgun.glb",
         "skins/compressed/koar.webp",
         "skins/compressed/koar0.webp",
+        "skins/compressed/koar0-2.webp",
+        "skins/compressed/koar0-2small.webp",
         "skins/compressed/koar0small.webp",
         "skins/compressed/koawp.webp",
         "skins/compressed/koawp0.webp",
@@ -73,9 +75,14 @@ internal sealed class MainForm : Form
         "skins/compressed/kosmg.webp",
         "skins/compressed/kosmg0.webp",
         "skins/compressed/kosmg0small.webp",
+        "textures/koarscope.webp",
+        "textures/koimpactatlas.png",
         "textures/koblurredsniperscopemobile.webp",
         "textures/kosniperscope.webp",
-        "vector.glb"
+        "vector.glb",
+        "weapons/ar2/ar2-scope-2.glb",
+        "maps/training/lightmap0.png",
+        "maps/training/map.glb"
     ];
     private static readonly Assembly AppAssembly = Assembly.GetExecutingAssembly();
     private static readonly HttpClient AssetClient = new();
@@ -243,7 +250,10 @@ internal sealed class MainForm : Form
             try
             {
                 var data = await LoadAssetAsync(assetPath);
-                e.Response = CreateResponse(new MemoryStream(data), 200, "OK", ContentTypeFor(assetPath));
+                var cacheControl = string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
+                    ? "no-cache, no-store, must-revalidate"
+                    : "public, max-age=31536000";
+                e.Response = CreateResponse(new MemoryStream(data), 200, "OK", ContentTypeFor(assetPath), cacheControl);
             }
             catch
             {
@@ -266,13 +276,13 @@ internal sealed class MainForm : Form
         }
     }
 
-    private CoreWebView2WebResourceResponse CreateResponse(Stream content, int statusCode, string reasonPhrase, string contentType)
+    private CoreWebView2WebResourceResponse CreateResponse(Stream content, int statusCode, string reasonPhrase, string contentType, string cacheControl = "public, max-age=31536000")
     {
         return _environment!.CreateWebResourceResponse(
             content,
             statusCode,
             reasonPhrase,
-            $"Content-Type: {contentType}\r\nAccess-Control-Allow-Origin: *\r\nCache-Control: public, max-age=31536000\r\n");
+            $"Content-Type: {contentType}\r\nAccess-Control-Allow-Origin: *\r\nCache-Control: {cacheControl}\r\n");
     }
 
     private async void OnNewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
@@ -448,6 +458,11 @@ internal sealed class MainForm : Form
     }
     private static Task<byte[]> LoadAssetAsync(string assetPath)
     {
+        if (string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase))
+        {
+            return AssetClient.GetByteArrayAsync(AssetUrls[assetPath]);
+        }
+
         lock (AssetCacheLock)
         {
             if (!AssetCache.TryGetValue(assetPath, out var download))
