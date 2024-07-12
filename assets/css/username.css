@@ -1,0 +1,186 @@
+.modal {
+	width : 480px;
+	box-sizing : border-box;
+	background-color : rgba( 0, 0, 0, 0.35 );
+	position : absolute;
+	top : 50%;
+	left : 50%;
+	transform : translate( -50%, -60% );
+	color : #FFF;
+	text-align : center;
+	font-family : Verdana, sans-serif;
+	font-weight : bold;
+	user-select : none;
+	border : 5px solid #1F1F1F;
+}
+.usernameInput {
+	width : 404px;
+	height : 50px;
+	box-sizing : border-box;
+	background-color : rgba( 0, 0, 0, 0.55 );
+	color : #FFF;
+	text-align : center;
+	font-weight : bold;
+	font-size : 25px;
+	outline : none;
+	border : none;
+	opacity : 0.75;
+}
+.usernameInput:focus {
+	opacity : 1.0;
+}
+.button {
+	width : 100%;
+	box-sizing : border-box;
+	vertical-align : middle;
+	color : #FFF;
+	font-weight : bold;
+	font-size : 17px;
+	padding-top : 9px;
+	padding-bottom : 12px;
+	margin-left : 20px;
+	margin-right : 20px;
+	transform : translate( -20px, 0 );
+	transition-duration : 0.1s;
+	cursor : pointer;
+	user-select : none;
+}
+
+.cancel {
+	background-color : rgba( 221, 51, 51, 0.7 );
+	border : 2px solid rgba( 255, 255, 255, 0.3 );
+}
+.cancel:hover {
+	background-color : rgba( 221, 51, 51, 1 );
+	border : 2px solid rgba( 255, 255, 255, 0.7 );
+}
+.cancel:active {
+	transform : translate( -20px, 0 ) scale( 0.94, 0.94 );
+}
+
+.create {
+	background-color : rgba( 50, 140, 220, 0.7 );
+	border : 2px solid rgba( 255, 255, 255, 0.3 );
+}
+.create:hover {
+	background-color : rgba( 50, 140, 220, 1 );
+	border : 2px solid rgba( 255, 255, 255, 0.7 );
+}
+.create:active {
+	transform : translate( -20px, 0 ) scale( 0.94, 0.94 );
+}
+
+.button2 {
+	width : 100%;
+	box-sizing : border-box;
+	border : 2px solid #FFF;
+	vertical-align : middle;
+	color : #FFF;
+	font-weight : bold;
+	font-size : 23px;
+	padding-top : 7px;
+	padding-bottom : 10px;
+	margin-left : 60px;
+	margin-right : 20px;
+	transform : translate( -60px, 0 );
+	transition-duration : 0.1s;
+	cursor : pointer;
+	user-select : none;
+}
+
+.cancel2 {
+	background-color : rgba( 221, 51, 51, 0.7 );
+	border : 2px solid rgba( 255, 255, 255, 0.3 );
+}
+.cancel2:hover {
+	background-color : rgba( 221, 51, 51, 1 );
+	border : 2px solid rgba( 255, 255, 255, 0.7 );
+}
+.cancel2:active {
+	transform : translate( -60px, 0 ) scale( 0.94, 0.94 );
+}
+
+.create2 {
+	background-color : rgba( 50, 140, 220, 0.7 );
+	border : 2px solid rgba( 255, 255, 255, 0.3 );
+}
+.create2:hover {
+	background-color : rgba( 50, 140, 220, 1 );
+	border : 2px solid rgba( 255, 255, 255, 0.7 );
+}
+.create2:active {
+	transform : translate( -60px, 0 ) scale( 0.94, 0.94 );
+}
+
+.tos {
+	text-decoration : none;
+	color : #AAF;
+	opacity : 0.8;
+}
+.tos:hover {
+	opacity : 1;
+}
+
+.overlay {
+	position : absolute;
+	width : 100%;
+	height : 100%;
+	z-index : 999;
+	background-color : #000;
+	opacity : 0.8;
+}
+
+:root {
+	--ko-red : #d30d18;
+	--ko-red-bright : #e0121e;
+	--ko-white : #faf3f3;
+	--ko-muted : #c4adb0;
+	--ko-panel : #070405;
+}
+
+.modal {
+	background-color : rgba( 7, 4, 5, 0.92 );
+	color : var( --ko-white );
+	border : 5px solid var( --ko-red );
+	box-shadow : 0 0 34px rgba( 211, 13, 24, 0.35 );
+}
+
+.usernameInput {
+	background-color : rgba( 211, 13, 24, 0.12 );
+	color : var( --ko-white );
+	border : 2px solid rgba( 211, 13, 24, 0.45 );
+}
+
+.usernameInput:focus {
+	border-color : var( --ko-red-bright );
+	box-shadow : 0 0 18px rgba( 224, 18, 30, 0.35 );
+}
+
+.button,
+.button2 {
+	color : var( --ko-white );
+}
+
+.cancel,
+.cancel2,
+.create,
+.create2 {
+	background-color : rgba( 211, 13, 24, 0.72 );
+	border : 2px solid rgba( 250, 243, 243, 0.28 );
+}
+
+.cancel:hover,
+.cancel2:hover,
+.create:hover,
+.create2:hover {
+	background-color : rgba( 224, 18, 30, 1 );
+	border : 2px solid rgba( 250, 243, 243, 0.7 );
+}
+
+.tos {
+	color : var( --ko-muted );
+}
+
+.tos:hover {
+	color : var( --ko-white );
+}
