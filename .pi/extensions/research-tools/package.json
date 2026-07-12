@@ -1,0 +1,17 @@
+{
+	"name": "pi-research-tools",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "1.30.0",
+		"typebox": "1.3.8"
+	},
+	"devDependencies": {
+		"@earendil-works/pi-coding-agent": "0.82.1"
+	},
+	"allowScripts": {
+		"@google/genai@1.52.0": true,
+		"protobufjs@7.6.5": true
+	}
+}
