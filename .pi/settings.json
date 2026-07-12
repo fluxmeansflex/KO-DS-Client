@@ -1,0 +1,6 @@
+{
+  "extensions": [
+    "./extensions/research-tools/knowledge.ts",
+    "./extensions/research-tools/web.ts"
+  ]
+}
