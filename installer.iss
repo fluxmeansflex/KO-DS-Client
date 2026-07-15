@@ -1,7 +1,7 @@
 ; Build with Inno Setup: ISCC.exe installer.iss
 
 #define AppName "KO Client - DEADSHOT.io"
-#define AppVersion "1.0.2"
+#define AppVersion "1.0.3"
 #define AppExeName "KO Client - DEADSHOT.io.exe"
 
 [Setup]
