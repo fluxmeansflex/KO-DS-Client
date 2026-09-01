@@ -225,23 +225,24 @@ internal sealed class MainForm : Form
     private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
     {
         var uri = e.Request.Uri;
-        if (TryMatchDeadshotAsset(uri, out var assetPath))
-        {
-            using var deferral = e.GetDeferral();
-            try
-            {
-                var data = await LoadAssetAsync(assetPath);
-                var cacheControl = string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
-                    ? "no-cache, no-store, must-revalidate"
-                    : "public, max-age=31536000";
-                e.Response = CreateResponse(new MemoryStream(data), 200, "OK", ContentTypeFor(assetPath), cacheControl);
-            }
-            catch
-            {
-                RemoveCachedAsset(assetPath);
-            }
-            return;
-        }
+       private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+{
+    var uri = e.Request.Uri;
+
+    if (IsDeadshotUrl(uri))
+    {
+        return;
+    }
+
+    if (IsBlockedHost(uri))
+    {
+        e.Response = _environment!.CreateWebResourceResponse(
+            Stream.Null,
+            204,
+            "No Content",
+            "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
+    }
+}
         if (IsDeadshotUrl(uri))
         {
             return;
