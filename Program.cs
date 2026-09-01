@@ -334,28 +334,9 @@ internal sealed class MainForm : Form
             // ,"--remote-debugging-port=0"
             );
     }
-    private static readonly string[] BlockedDomains =
-    [
-        "adnxs.com",
-        "adsafeprotected.com",
-        "amazon-adsystem.com",
-        "cloudflareinsights.com",
-        "doubleclick.net",
-        "google-analytics.com",
-        "googleadservices.com",
-        "googlesyndication.com",
-        "googletagmanager.com",
-        "googletagservices.com",
-        "imasdk.googleapis.com",
-        "pubmatic.com",
-        "rubiconproject.com",
-        "scorecardresearch.com",
-        "smilewanted.com",
-        "the-ozone-project.com",
-        "tynt.com",
-        "vntsm.com",
-        "yellowblue.io"
-    ];
+  private static readonly string[] BlockedDomains =
+[
+];
     private static bool IsBlockedHost(string rawUrl)
     {
         if (!Uri.TryCreate(rawUrl, UriKind.Absolute, out var uri))
