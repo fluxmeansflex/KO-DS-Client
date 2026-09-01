@@ -1,4 +1,4 @@
-using System.Diagnostics;
+fusing System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using Microsoft.Web.WebView2.Core;
@@ -183,6 +183,7 @@ internal sealed class MainForm : Form
             SetFullscreen(core.ContainsFullScreenElement);
     }
 
+
     private void OnWebViewKeyUp(object? sender, KeyEventArgs e)
     {
         if (e.KeyCode != Keys.F11)
@@ -222,10 +223,7 @@ internal sealed class MainForm : Form
         Bounds = _restoreBounds;
         WindowState = _restoreWindowState;
     }
-    private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
-    {
-        var uri = e.Request.Uri;
-       private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+   private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
 {
     var uri = e.Request.Uri;
 
@@ -242,21 +240,21 @@ internal sealed class MainForm : Form
             "No Content",
             "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
     }
-}
-        if (IsDeadshotUrl(uri))
-        {
-            return;
-        }
+ }
+//         if (IsDeadshotUrl(uri))
+//         {
+//             return;
+//         }
 
-        if (IsBlockedHost(uri))
-        {
-            e.Response = _environment!.CreateWebResourceResponse(
-                Stream.Null,
-                204,
-                "No Content",
-                "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
-        }
-    }
+//         if (IsBlockedHost(uri))
+//         {
+//             e.Response = _environment!.CreateWebResourceResponse(
+//                 Stream.Null,
+//                 204,
+//                 "No Content",
+//                 "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
+//         }
+//     }
 
     private CoreWebView2WebResourceResponse CreateResponse(Stream content, int statusCode, string reasonPhrase, string contentType, string cacheControl = "public, max-age=31536000")
     {
