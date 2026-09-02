@@ -222,9 +222,40 @@ internal sealed class MainForm : Form
         Bounds = _restoreBounds;
         WindowState = _restoreWindowState;
     }
-   private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
 {
     var uri = e.Request.Uri;
+
+    if (TryMatchDeadshotAsset(uri, out var assetPath))
+    {
+        using var deferral = e.GetDeferral();
+
+        try
+        {
+            var data = await LoadAssetAsync(assetPath);
+
+            var cacheControl =
+                string.Equals(
+                    assetPath,
+                    "final.pkg",
+                    StringComparison.OrdinalIgnoreCase)
+                ? "no-cache, no-store, must-revalidate"
+                : "public, max-age=31536000";
+
+            e.Response = CreateResponse(
+                new MemoryStream(data),
+                200,
+                "OK",
+                ContentTypeFor(assetPath),
+                cacheControl);
+        }
+        catch
+        {
+            RemoveCachedAsset(assetPath);
+        }
+
+        return;
+    }
 
     if (IsDeadshotUrl(uri))
     {
@@ -239,21 +270,7 @@ internal sealed class MainForm : Form
             "No Content",
             "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
     }
- }
-//         if (IsDeadshotUrl(uri))
-//         {
-//             return;
-//         }
-
-//         if (IsBlockedHost(uri))
-//         {
-//             e.Response = _environment!.CreateWebResourceResponse(
-//                 Stream.Null,
-//                 204,
-//                 "No Content",
-//                 "Content-Length: 0\r\nAccess-Control-Allow-Origin: *\r\n");
-//         }
-//     }
+}
 
     private CoreWebView2WebResourceResponse CreateResponse(Stream content, int statusCode, string reasonPhrase, string contentType, string cacheControl = "public, max-age=31536000")
     {
