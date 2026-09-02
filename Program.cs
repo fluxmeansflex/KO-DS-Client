@@ -226,6 +226,37 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
 {
     var uri = e.Request.Uri;
 
+    if (TryMatchDeadshotAsset(uri, out var assetPath))
+    {
+        // Do NOT replace old core game files.
+        if (!string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(assetPath, "js/core.js", StringComparison.OrdinalIgnoreCase))
+        {
+            var deferral = e.GetDeferral();
+
+            try
+            {
+                var data = await LoadAssetAsync(assetPath);
+
+                e.Response = CreateResponse(
+                    new MemoryStream(data),
+                    200,
+                    "OK",
+                    ContentTypeFor(assetPath));
+            }
+            catch
+            {
+                RemoveCachedAsset(assetPath);
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+
+            return;
+        }
+    }
+
     if (IsDeadshotUrl(uri))
     {
         return;
