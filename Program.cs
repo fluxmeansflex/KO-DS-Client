@@ -229,8 +229,7 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
     if (TryMatchDeadshotAsset(uri, out var assetPath))
     {
         // Do NOT replace old core game files.
-        if (!string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
-            && !string.Equals(assetPath, "js/core.js", StringComparison.OrdinalIgnoreCase))
+       if (!string.Equals(assetPath, "js/core.js", StringComparison.OrdinalIgnoreCase))
         {
             var deferral = e.GetDeferral();
 
