@@ -20,7 +20,7 @@ internal static class Program
     }
 }
 
-internal sealed class MainForm : Form
+internal sealed class MainForm: Form
 {
     private const string AppTitle = "KO Client - DEADSHOT.io";
     private const string RepositoryUrl = "https://github.com/fluxmeansflex/KO-DS-Client";
@@ -46,7 +46,7 @@ internal sealed class MainForm : Form
         Width = 1280;
         Height = 720;
         StartPosition = FormStartPosition.CenterScreen;
-        BackColor = Color.Black;
+        BackColor = Color. Black;
         Icon = ReadAppIcon();
         WindowThemeSync.Attach(this);
         _webView.KeyUp += OnWebViewKeyUp;
@@ -165,7 +165,7 @@ internal sealed class MainForm : Form
         core.Settings.IsStatusBarEnabled = false;
         core.Settings.IsZoomControlEnabled = false;
         core.Settings.IsReputationCheckingRequired = false;
-        core.Settings.AreDevToolsEnabled = Environment.GetEnvironmentVariable("DEBUG") == "1";
+       core.Settings.AreDevToolsEnabled = true;
         foreach (var filter in AssetFilters)
         {
             core.AddWebResourceRequestedFilter(filter, CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
@@ -228,6 +228,7 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
 
     if (TryMatchDeadshotAsset(uri, out var assetPath))
     {
+    
         // Do NOT replace old core game files.
       if (!string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
     && !string.Equals(assetPath, "js/core.js", StringComparison.OrdinalIgnoreCase))
@@ -366,7 +367,7 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
     }
     private static bool TryMatchDeadshotAsset(string rawUrl, out string assetPath)
     {
-        assetPath = string.Empty;
+        assetPath = string. Empty;
         if (!Uri.TryCreate(rawUrl, UriKind.Absolute, out var uri)
             || !uri.Host.Equals("deadshot.io", StringComparison.OrdinalIgnoreCase))
         {
