@@ -158,14 +158,14 @@ internal sealed class MainForm: Form
         }
     }
 
-    private void ConfigureCore(CoreWebView2 core)
+   private void ConfigureCore(CoreWebView2 core)
     {
         core.Settings.AreDefaultContextMenusEnabled = false;
         core.Settings.AreBrowserAcceleratorKeysEnabled = false;
         core.Settings.IsStatusBarEnabled = false;
         core.Settings.IsZoomControlEnabled = false;
         core.Settings.IsReputationCheckingRequired = false;
-       core.Settings.AreDevToolsEnabled = true;
+        core.Settings.AreDevToolsEnabled = true;
         foreach (var filter in AssetFilters)
         {
             core.AddWebResourceRequestedFilter(filter, CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
@@ -180,8 +180,20 @@ internal sealed class MainForm: Form
         core.DocumentTitleChanged += (_, _) => Text = AppTitle;
         core.ContainsFullScreenElementChanged += (_, _) =>
             SetFullscreen(core.ContainsFullScreenElement);
-    }
 
+        core.NavigationCompleted += async (_, args) =>
+        {
+            if (args.IsSuccess)
+            {
+                string skinScript = @"
+                    window.addEventListener('DOMContentLoaded', () => {
+                        console.log('KO Client custom injectors active');
+                    });
+                ";
+                await core.ExecuteScriptAsync(skinScript);
+            }
+        };
+    }
 
     private void OnWebViewKeyUp(object? sender, KeyEventArgs e)
     {
@@ -334,20 +346,20 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
         Directory.CreateDirectory(dir);
         return dir;
     }
-    private static string BrowserArguments()
+ private static string BrowserArguments()
     {
         return string.Join(' ',
             "--autoplay-policy=no-user-gesture-required",
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",
             "--disable-component-update",
-            "--disable-features=msSmartScreenProtection",
+            "--disable-features=msSmartScreenProtection,TrackingPrevention,msWebOOUI,msPdfOOUI",
             "--disable-renderer-backgrounding",
             "--disable-sync",
             "--enable-gpu-rasterization",
             "--ignore-gpu-blocklist",
-            "--no-first-run"
-            // ,"--remote-debugging-port=0"
+            "--no-first-run",
+            "--disable-web-security"
             );
     }
   private static readonly string[] BlockedDomains =
@@ -392,7 +404,7 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
             return true;
         }
         var fileName = requestPath.Split('/')[^1];
-        return AssetByName.TryGetValue(fileName, out assetPath!);
+        return AssetByName.TryGetValue(fileName, out assetPath!);  
     }
     private static Task<byte[]> LoadAssetAsync(string assetPath)
     {
