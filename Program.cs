@@ -35,6 +35,10 @@ internal sealed class MainForm: Form
         "final.pkg",
         "js/core.js"
     };
+    // Official default weapon skins -> KO replacements. Key: file name the game requests
+    // (lower case). Value: replacement path in asset-paths.json.
+    // Icons are the 512px files; textures (and their "small" previews) are the 1254px files.
+    private static readonly Dictionary<string, string> SkinAliases = CreateSkinAliases();
     private static Dictionary<string, string> AssetUrls = new(StringComparer.OrdinalIgnoreCase);
     private static string[] AssetFilters = [];
     private readonly WebView2 _webView = new() { Dock = DockStyle.Fill, DefaultBackgroundColor = Color.Black };
@@ -67,14 +71,34 @@ internal sealed class MainForm: Form
             StringComparer.OrdinalIgnoreCase);
     }
 
+    private static Dictionary<string, string> CreateSkinAliases()
+    {
+        var aliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var weapon in new[] { "ar", "smg", "awp", "shotgun" })
+        {
+            aliases[$"default{weapon}.webp"] = $"skins/compressed/ko{weapon}.webp";
+            aliases[$"default{weapon}0.webp"] = $"skins/compressed/ko{weapon}0.webp";
+            aliases[$"default{weapon}0small.webp"] = $"skins/compressed/ko{weapon}0small.webp";
+        }
+        return aliases;
+    }
+
     private static string[] CreateAssetFilters(IEnumerable<string> paths)
     {
-        return paths
-            .SelectMany(path => new[]
+        var assetFilters = paths.SelectMany(path => new[]
+        {
+            $"https://deadshot.io/{path}*",
+            $"https://deadshot.io/*/{Path.GetFileName(path)}*"
+        });
+        var aliasFilters = SkinAliases
+            .Where(alias => paths.Contains(alias.Value, StringComparer.OrdinalIgnoreCase))
+            .SelectMany(alias => new[]
             {
-                $"https://deadshot.io/{path}*",
-                $"https://deadshot.io/*/{Path.GetFileName(path)}*"
-            })
+                $"https://deadshot.io/{alias.Key}*",
+                $"https://deadshot.io/*/{alias.Key}*"
+            });
+        return assetFilters
+            .Concat(aliasFilters)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
     }
@@ -375,6 +399,13 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
             return false;
         }
         var requestPath = NormalizeRequestPath(uri.AbsolutePath);
+        var requestFileName = requestPath.Split('/')[^1];
+        if (SkinAliases.TryGetValue(requestFileName, out var aliasPath)
+            && AssetUrls.ContainsKey(aliasPath))
+        {
+            assetPath = aliasPath;
+            return true;
+        }
         if (requestPath.StartsWith("assets/", StringComparison.OrdinalIgnoreCase))
         {
             requestPath = requestPath["assets/".Length..];
