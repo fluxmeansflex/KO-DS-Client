@@ -29,8 +29,13 @@ internal sealed class MainForm: Form
     private static readonly HttpClient AssetClient = new();
     private static readonly Dictionary<string, Task<byte[]>> AssetCache = new(StringComparer.OrdinalIgnoreCase);
     private static readonly object AssetCacheLock = new();
+    // Game files that change with every Deadshot update. Never replace them.
+    private static readonly HashSet<string> GameCorePaths = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "final.pkg",
+        "js/core.js"
+    };
     private static Dictionary<string, string> AssetUrls = new(StringComparer.OrdinalIgnoreCase);
-    private static Dictionary<string, string> AssetByName = new(StringComparer.OrdinalIgnoreCase);
     private static string[] AssetFilters = [];
     private readonly WebView2 _webView = new() { Dock = DockStyle.Fill, DefaultBackgroundColor = Color.Black };
     private CoreWebView2Environment? _environment;
@@ -62,14 +67,6 @@ internal sealed class MainForm: Form
             StringComparer.OrdinalIgnoreCase);
     }
 
-    private static Dictionary<string, string> CreateAssetByName(IEnumerable<string> paths)
-    {
-        return paths.ToDictionary(
-            path => path.Split('/')[^1],
-            path => path,
-            StringComparer.OrdinalIgnoreCase);
-    }
-
     private static string[] CreateAssetFilters(IEnumerable<string> paths)
     {
         return paths
@@ -93,11 +90,18 @@ internal sealed class MainForm: Form
                 return;
             }
 
+            paths = paths
+                .Where(path => !GameCorePaths.Contains(path))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+            if (paths.Length == 0)
+            {
+                return;
+            }
+
             var assetUrls = CreateAssetUrls(paths);
-            var assetByName = CreateAssetByName(paths);
             var assetFilters = CreateAssetFilters(paths);
             AssetUrls = assetUrls;
-            AssetByName = assetByName;
             AssetFilters = assetFilters;
         }
         catch
@@ -165,7 +169,11 @@ internal sealed class MainForm: Form
         core.Settings.IsStatusBarEnabled = false;
         core.Settings.IsZoomControlEnabled = false;
         core.Settings.IsReputationCheckingRequired = false;
+#if DEBUG
         core.Settings.AreDevToolsEnabled = true;
+#else
+        core.Settings.AreDevToolsEnabled = false;
+#endif
         foreach (var filter in AssetFilters)
         {
             core.AddWebResourceRequestedFilter(filter, CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
@@ -180,19 +188,6 @@ internal sealed class MainForm: Form
         core.DocumentTitleChanged += (_, _) => Text = AppTitle;
         core.ContainsFullScreenElementChanged += (_, _) =>
             SetFullscreen(core.ContainsFullScreenElement);
-
-        core.NavigationCompleted += async (_, args) =>
-        {
-            if (args.IsSuccess)
-            {
-                string skinScript = @"
-                    window.addEventListener('DOMContentLoaded', () => {
-                        console.log('KO Client custom injectors active');
-                    });
-                ";
-                await core.ExecuteScriptAsync(skinScript);
-            }
-        };
     }
 
     private void OnWebViewKeyUp(object? sender, KeyEventArgs e)
@@ -240,34 +235,29 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
 
     if (TryMatchDeadshotAsset(uri, out var assetPath))
     {
-    
-        // Do NOT replace old core game files.
-      if (!string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase)
-    && !string.Equals(assetPath, "js/core.js", StringComparison.OrdinalIgnoreCase))
+        var deferral = e.GetDeferral();
+
+        try
         {
-            var deferral = e.GetDeferral();
+            var data = await LoadAssetAsync(assetPath);
 
-            try
-            {
-                var data = await LoadAssetAsync(assetPath);
-
-                e.Response = CreateResponse(
-                    new MemoryStream(data),
-                    200,
-                    "OK",
-                    ContentTypeFor(assetPath));
-            }
-            catch
-            {
-                RemoveCachedAsset(assetPath);
-            }
-            finally
-            {
-                deferral.Complete();
-            }
-
-            return;
+            e.Response = CreateResponse(
+                new MemoryStream(data),
+                200,
+                "OK",
+                ContentTypeFor(assetPath));
         }
+        catch
+        {
+            // Download failed: leave the request untouched so the game's own file loads.
+            RemoveCachedAsset(assetPath);
+        }
+        finally
+        {
+            deferral.Complete();
+        }
+
+        return;
     }
 
     if (IsDeadshotUrl(uri))
@@ -358,8 +348,7 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
             "--disable-sync",
             "--enable-gpu-rasterization",
             "--ignore-gpu-blocklist",
-            "--no-first-run",
-            "--disable-web-security"
+            "--no-first-run"
             );
     }
   private static readonly string[] BlockedDomains =
@@ -403,16 +392,10 @@ private async void OnWebResourceRequested(object? sender, CoreWebView2WebResourc
             assetPath = matchingPath;
             return true;
         }
-        var fileName = requestPath.Split('/')[^1];
-        return AssetByName.TryGetValue(fileName, out assetPath!);  
+        return false;
     }
     private static Task<byte[]> LoadAssetAsync(string assetPath)
     {
-        if (string.Equals(assetPath, "final.pkg", StringComparison.OrdinalIgnoreCase))
-        {
-            return AssetClient.GetByteArrayAsync(AssetUrls[assetPath]);
-        }
-
         lock (AssetCacheLock)
         {
             if (!AssetCache.TryGetValue(assetPath, out var download))
