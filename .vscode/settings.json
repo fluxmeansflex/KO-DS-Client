@@ -1,0 +1,12 @@
+{
+  "godotTools.editorPath.godot4": "${env:GODOT_BIN}",
+  "godotTools.lsp.serverPort": 6005,
+  "godotTools.lsp.headless": false,
+  "files.exclude": {
+    "**/.godot": true
+  },
+  "search.exclude": {
+    "**/.godot": true,
+    "**/*.import": true
+  }
+}

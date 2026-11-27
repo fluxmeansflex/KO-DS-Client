@@ -1,0 +1,62 @@
+[gd_resource type="Theme" format=3 uid="uid://beqxfaqpommh3"]
+
+[ext_resource type="FontFile" uid="uid://bb3naxtw5j7te" path="res://ui/assets/fonts/opensans.ttf" id="1_6grts"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
+content_margin_left = 32.0
+content_margin_top = 0.0
+content_margin_right = 32.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.58)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.08, 0.1, 0.13, 0.72)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.243, 0.627, 0.941, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[resource]
+default_font = ExtResource("1_6grts")
+default_font_size = 15
+DangerLabel/base_type = &"Label"
+DangerLabel/colors/font_color = Color(0.9490196, 0.38039216, 0.38039216, 1)
+DangerLabel/font_sizes/font_size = 18
+DangerLabel/fonts/font = ExtResource("1_6grts")
+HeadingLabel/base_type = &"Label"
+HeadingLabel/font_sizes/font_size = 18
+HeadingLabel/fonts/font = ExtResource("1_6grts")
+Label/colors/font_color = Color(0.9490196, 0.9607843, 0.98039216, 1)
+Label/font_sizes/font_size = 15
+Label/fonts/font = ExtResource("1_6grts")
+MutedLabel/base_type = &"Label"
+MutedLabel/colors/font_color = Color(0.6901961, 0.7294118, 0.7882353, 0.65882355)
+MutedLabel/font_sizes/font_size = 14
+StatusLabel/base_type = &"Label"
+StatusLabel/colors/font_color = Color(0.93333334, 0.93333334, 0.93333334, 0.52)
+StatusLabel/font_sizes/font_size = 24
+StatusLabel/fonts/font = ExtResource("1_6grts")
+TitleLabel/base_type = &"Label"
+TitleLabel/font_sizes/font_size = 26
+TitleLabel/fonts/font = ExtResource("1_6grts")
+TopBar/base_type = &"PanelContainer"
+TopBar/styles/panel = SubResource("StyleBoxFlat_topbar")
+UpdateBar/base_type = &"ProgressBar"
+UpdateBar/styles/background = SubResource("StyleBoxFlat_bar_bg")
+UpdateBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")

@@ -1,0 +1,307 @@
+[gd_scene format=3 uid="uid://bsul1a7gw1kmd"]
+
+[ext_resource type="Theme" uid="uid://beqxfaqpommh3" path="res://ui/theme/deadshot_theme.tres" id="1_8qpr4"]
+[ext_resource type="Script" uid="uid://c1sh0t5v4ouvg" path="res://boot/boot.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://djkgku1e45rmf" path="res://boot/boot_backdrop.gdshader" id="3_w8yh4"]
+[ext_resource type="Texture2D" uid="uid://dyugywytpen47" path="res://ui/assets/icons/ko_client_boot_splash.png" id="4_2diu5"]
+[ext_resource type="Script" uid="uid://mwln0ot6ogl6" path="res://boot/boot_button.gd" id="4_vs5l5"]
+[ext_resource type="Texture2D" uid="uid://p2e2mkitbmhc" path="res://ui/assets/icons/logo.webp" id="5_6ptnl"]
+[ext_resource type="Texture2D" uid="uid://d2rbs7ql5hpmj" path="res://ui/assets/icons/warning.svg" id="6_vxtv7"]
+[ext_resource type="Texture2D" uid="uid://hxqddsdritgl" path="res://ui/assets/icons/spinner.svg" id="7_7aayu"]
+[ext_resource type="FontFile" uid="uid://bb3naxtw5j7te" path="res://ui/assets/fonts/opensans.ttf" id="9_2diu5"]
+[ext_resource type="Script" uid="uid://dyh070p16f68s" path="res://boot/pack_updater.gd" id="10_updater"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2diu5"]
+shader = ExtResource("3_w8yh4")
+shader_parameter/crop_bottom = 0.76
+shader_parameter/blur_lod = 3.8
+shader_parameter/dim_amount = 0.24
+shader_parameter/vignette_strength = 0.48
+
+[sub_resource type="Gradient" id="Gradient_2diu5"]
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.46)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6ptnl"]
+gradient = SubResource("Gradient_2diu5")
+width = 1
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_vxtv7"]
+offsets = PackedFloat32Array(0, 0.16, 0.84, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.61960787, 0, 0, 0, 0.61960787, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7aayu"]
+gradient = SubResource("Gradient_vxtv7")
+width = 256
+height = 1
+
+[node name="BootUpdater" type="Control" unique_id=1222131689]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8qpr4")
+script = ExtResource("1_script")
+
+[node name="BackdropImage" type="TextureRect" parent="." unique_id=1511018514]
+texture_filter = 4
+material = SubResource("ShaderMaterial_2diu5")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("4_2diu5")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BottomScrim" type="TextureRect" parent="." unique_id=2043618480]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -320.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_6ptnl")
+expand_mode = 1
+
+[node name="TopBar" type="PanelContainer" parent="." unique_id=848665736]
+custom_minimum_size = Vector2(0, 166)
+layout_mode = 0
+anchor_right = 1.0
+offset_bottom = 166.0
+mouse_filter = 2
+theme_type_variation = &"TopBar"
+
+[node name="HeaderInner" type="Control" parent="TopBar" unique_id=1125988584]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ClientMeta" type="VBoxContainer" parent="TopBar/HeaderInner" unique_id=867381154]
+layout_mode = 0
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -28.0
+offset_right = 280.0
+offset_bottom = 28.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="ClientTitle" type="Label" parent="TopBar/HeaderInner/ClientMeta" unique_id=831778071]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 24
+text = "KO CLIENT"
+
+[node name="VersionLabel" type="Label" parent="TopBar/HeaderInner/ClientMeta" unique_id=341126138]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 16
+text = "v1.0.0"
+
+[node name="LogoRect" type="TextureRect" parent="TopBar/HeaderInner" unique_id=675775358]
+custom_minimum_size = Vector2(640, 130)
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -65.0
+offset_right = 320.0
+offset_bottom = 65.0
+mouse_filter = 2
+texture = ExtResource("5_6ptnl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StageCenter" type="CenterContainer" parent="." unique_id=2041048726]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 166.0
+offset_bottom = -72.0
+mouse_filter = 2
+
+[node name="StageVBox" type="VBoxContainer" parent="StageCenter" unique_id=50416940]
+custom_minimum_size = Vector2(860, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 26
+alignment = 1
+
+[node name="StatusBanner" type="Control" parent="StageCenter/StageVBox" unique_id=261232963]
+custom_minimum_size = Vector2(860, 72)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="StatusBand" type="TextureRect" parent="StageCenter/StageVBox/StatusBanner" unique_id=1439036891]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_7aayu")
+expand_mode = 1
+
+[node name="StatusRow" type="HBoxContainer" parent="StageCenter/StageVBox/StatusBanner" unique_id=382726437]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ErrorIcon" type="TextureRect" parent="StageCenter/StageVBox/StatusBanner/StatusRow" unique_id=989204718]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("6_vxtv7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StatusLabel" type="Label" parent="StageCenter/StageVBox/StatusBanner/StatusRow" unique_id=1025394516]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeadingLabel"
+theme_override_font_sizes/font_size = 32
+text = "Checking for updates"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SpinnerRect" type="TextureRect" parent="StageCenter/StageVBox/StatusBanner/StatusRow" unique_id=590173277]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+mouse_filter = 2
+texture = ExtResource("7_7aayu")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProgressBlock" type="VBoxContainer" parent="StageCenter/StageVBox" unique_id=1679999377]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="ProgressBar" type="ProgressBar" parent="StageCenter/StageVBox/ProgressBlock" unique_id=48057757]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 12)
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"UpdateBar"
+show_percentage = false
+
+[node name="DetailRow" type="HBoxContainer" parent="StageCenter/StageVBox/ProgressBlock" unique_id=703737244]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DetailLabel" type="Label" parent="StageCenter/StageVBox/ProgressBlock/DetailRow" unique_id=859236540]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MutedLabel"
+theme_override_colors/font_color = Color(0.933, 0.933, 0.933, 0.86)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+
+[node name="SpeedLabel" type="Label" parent="StageCenter/StageVBox/ProgressBlock/DetailRow" unique_id=627972581]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_colors/font_color = Color(0.933, 0.933, 0.933, 0.74)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+
+[node name="Actions" type="HBoxContainer" parent="StageCenter/StageVBox" unique_id=1279529021]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="RetryBtn" type="Control" parent="StageCenter/StageVBox/Actions" unique_id=1971502383]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("4_vs5l5")
+text = "Retry"
+font = ExtResource("9_2diu5")
+bg = Color(0.243, 0.627, 0.941, 0.96)
+corner_radius = 14
+
+[node name="OfflineBtn" type="Control" parent="StageCenter/StageVBox/Actions" unique_id=1161326562]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("4_vs5l5")
+text = "Play Offline"
+font = ExtResource("9_2diu5")
+corner_radius = 14
+
+[node name="CloseBtn" type="Control" parent="StageCenter/StageVBox/Actions" unique_id=261254407]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("4_vs5l5")
+text = "Quit"
+font = ExtResource("9_2diu5")
+bg = Color(0.84, 0.22, 0.22, 0.9)
+corner_radius = 14
+
+[node name="FooterLabel" type="Label" parent="." unique_id=1997091606]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 36)
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+offset_bottom = -20.0
+theme_type_variation = &"StatusLabel"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PackUpdater" type="Node" parent="." node_paths=PackedStringArray("manifest_request", "download_request")]
+unique_name_in_owner = true
+script = ExtResource("10_updater")
+manifest_request = NodePath("ManifestRequest")
+download_request = NodePath("DownloadRequest")
+
+[node name="ManifestRequest" type="HTTPRequest" parent="PackUpdater"]
+use_threads = true
+timeout = 10.0
+
+[node name="DownloadRequest" type="HTTPRequest" parent="PackUpdater"]
+download_chunk_size = 1048576
+use_threads = true
+accept_gzip = false
+timeout = 600.0
+
+[node name="ExtractPulseTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.4

@@ -1,0 +1,73 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="KO Client - DEADSHOT.io"
+config/version="1.0.0"
+run/main_scene="res://boot/boot.tscn"
+config/features=PackedStringArray("4.7", "Mobile")
+boot_splash/bg_color=Color(0.055, 0.06, 0.075, 1)
+boot_splash/stretch_mode=4
+boot_splash/image="res://ui/assets/icons/ko_client_boot_splash.png"
+config/icon="res://ui/assets/icons/ko_client_icon.webp"
+config/windows_native_icon="res://ui/assets/icons/ko_client_icon.ico"
+
+[audio]
+
+driver/output_latency=20
+buses/channel_disable_time=0.5
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/vsync/vsync_mode=0
+
+[gui]
+
+theme/custom="res://ui/theme/deadshot_theme.tres"
+
+[physics]
+
+common/physics_ticks_per_second=30
+common/max_physics_steps_per_frame=1
+common/physics_jitter_fix=0.0
+2d/physics_engine="Dummy"
+3d/physics_engine="Dummy"
+common/enable_object_picking=false
+
+[rendering]
+
+rendering_device/driver.windows="vulkan"
+rendering_device/vulkan/max_descriptors_per_pool=256
+renderer/rendering_method="mobile"
+textures/default_filters/use_nearest_mipmap_filter=true
+lights_and_shadows/directional_shadow/size=256
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+gl_compatibility/item_buffer_size=4096
+reflections/sky_reflections/texture_array_reflections=false
+reflections/sky_reflections/roughness_layers=2
+reflections/sky_reflections/ggx_samples=8
+reflections/reflection_atlas/reflection_size=64
+reflections/reflection_atlas/reflection_count=1
+reflections/specular_occlusion/enabled=false
+lightmapping/lightmap_gi/use_bicubic_filter=false
+driver/depth_prepass/enable=false
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+limits/opengl/max_renderable_elements=4096
+limits/opengl/max_renderable_lights=4
+limits/opengl/max_lights_per_object=2
+lights_and_shadows/positional_shadow/atlas_size=0
+limits/opengl/max_decals=0

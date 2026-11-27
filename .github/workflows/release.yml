@@ -1,0 +1,223 @@
+name: Build Windows Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.0.0). Leave empty for artifact-only build."
+        required: false
+        type: string
+        default: ""
+      rebuild_template:
+        description: "Force rebuild custom export template (ignores template cache)."
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "4.7.2"
+  GODOT_STATUS: "stable"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Cache Godot editor and base templates
+        id: godot-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            C:\godot
+            ~\AppData\Roaming\Godot\export_templates\${{ env.GODOT_VERSION }}.${{ env.GODOT_STATUS }}
+          key: godot-win-${{ env.GODOT_VERSION }}-${{ env.GODOT_STATUS }}
+
+      - name: Download Godot editor and base templates
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+
+          $ver = "$($env:GODOT_VERSION)-$($env:GODOT_STATUS)"
+          $baseUrl = "https://github.com/godotengine/godot/releases/download/$ver"
+          $tplDir = Join-Path $env:APPDATA "Godot\export_templates\$($env:GODOT_VERSION).$($env:GODOT_STATUS)"
+          New-Item -ItemType Directory -Force -Path 'C:\godot', $tplDir | Out-Null
+
+          $editorZip = 'C:\godot\editor.zip'
+          Invoke-WebRequest -Uri "$baseUrl/Godot_v${ver}_win64.exe.zip" -OutFile $editorZip -MaximumRetryCount 3 -RetryIntervalSec 5
+          Expand-Archive -Path $editorZip -DestinationPath 'C:\godot' -Force
+          Remove-Item -Path $editorZip -Force
+
+          $tpzPath = 'C:\godot\templates.zip'
+          $tplTmp = 'C:\godot\tpl_tmp'
+          Invoke-WebRequest -Uri "$baseUrl/Godot_v${ver}_export_templates.tpz" -OutFile $tpzPath -MaximumRetryCount 3 -RetryIntervalSec 5
+          Expand-Archive -Path $tpzPath -DestinationPath $tplTmp -Force
+          Move-Item -Path (Join-Path $tplTmp 'templates\*') -Destination $tplDir -Force
+          Remove-Item -Path $tplTmp, $tpzPath -Recurse -Force
+
+      - name: Cache custom Windows release template
+        id: custom-tpl-cache
+        uses: actions/cache@v6
+        with:
+          path: C:\godot-custom-template
+          key: godot-custom-tpl-win-v4-${{ env.GODOT_VERSION }}-${{ hashFiles('build_template/custom.py') }}
+
+      - name: Setup MSYS2 UCRT64 GCC
+        id: msys2
+        if: steps.custom-tpl-cache.outputs.cache-hit != 'true' || inputs.rebuild_template
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc
+
+      - name: Setup Python for custom template build
+        if: steps.custom-tpl-cache.outputs.cache-hit != 'true' || inputs.rebuild_template
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Build lean custom Windows export template
+        if: steps.custom-tpl-cache.outputs.cache-hit != 'true' || inputs.rebuild_template
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+
+          $customPy = (Resolve-Path 'build_template\custom.py').Path
+          $mingwBin = Join-Path "${{ steps.msys2.outputs.msys2-location }}" 'ucrt64\bin'
+          if (-not (Test-Path (Join-Path $mingwBin 'gcc.exe'))) { throw "UCRT64 GCC not found in $mingwBin" }
+          $env:PATH = "$mingwBin;$env:PATH"
+          gcc --version
+
+          python -m pip --disable-pip-version-check install --upgrade scons
+          if (Test-Path 'C:\godot-src') { Remove-Item -Path 'C:\godot-src' -Recurse -Force }
+          git clone --depth 1 --branch "$($env:GODOT_VERSION)-$($env:GODOT_STATUS)" https://github.com/godotengine/godot.git C:\godot-src
+
+          Copy-Item -Path $customPy -Destination 'C:\godot-src\custom.py' -Force
+
+          Push-Location 'C:\godot-src'
+          try {
+            scons d3d12=no angle=no winrt=no use_mingw=yes "-j$($env:NUMBER_OF_PROCESSORS)"
+          } finally {
+            Pop-Location
+          }
+
+          New-Item -ItemType Directory -Force -Path 'C:\godot-custom-template' | Out-Null
+          $builtExe = Get-ChildItem -Path 'C:\godot-src\bin' -Filter 'godot.windows.template_release.x86_64*.exe' | Where-Object { $_.Name -notlike '*.console.exe' } | Select-Object -First 1
+          if (-not $builtExe -or $builtExe.Length -lt 5MB) { throw "Valid compiled template executable not found in C:\godot-src\bin" }
+          & strip $builtExe.FullName
+          Copy-Item -Path $builtExe.FullName -Destination 'C:\godot-custom-template\windows_release_x86_64.exe' -Force
+
+      - name: Install custom export template
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $tplDir = Join-Path $env:APPDATA "Godot\export_templates\$($env:GODOT_VERSION).$($env:GODOT_STATUS)"
+          $src = 'C:\godot-custom-template\windows_release_x86_64.exe'
+          $dst = Join-Path $tplDir 'windows_release_x86_64.exe'
+          Copy-Item -Path $src -Destination $dst -Force
+          $sizeMB = [math]::Round((Get-Item $dst).Length / 1MB, 2)
+          Write-Host "Using custom export template: $sizeMB MB"
+
+      - name: Import, check, and export Windows release
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+
+          $godot = "C:\godot\Godot_v$($env:GODOT_VERSION)-$($env:GODOT_STATUS)_win64_console.exe"
+          New-Item -ItemType Directory -Force -Path 'build' | Out-Null
+
+          & $godot --headless --path . --import
+          & $godot --headless --no-header -d --path . --check-only -s boot/boot.gd
+          & $godot --headless --path . --export-release 'Windows Desktop' 'build/KO-Client.exe'
+
+      - name: Package portable KO-Client.zip
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+
+          $stage = 'build\stage\KO-Client'
+          $zipPath = 'build\KO-Client.zip'
+          if (Test-Path -Path $stage) { Remove-Item -Path $stage -Recurse -Force }
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          Copy-Item -Path 'build\KO-Client.exe' -Destination $stage -Force
+          Compress-Archive -Path $stage -DestinationPath $zipPath -CompressionLevel Optimal -Force
+          Get-FileHash -Path $zipPath -Algorithm SHA256
+
+      - name: Upload artifact
+        if: github.event_name == 'workflow_dispatch' && inputs.tag == ''
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/KO-Client.zip
+          archive: false
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.tag != ''
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          files: build/KO-Client.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+      - name: Scan release with VirusTotal
+        if: (startsWith(github.ref, 'refs/tags/v') || inputs.tag != '') && env.VT_API_KEY != ''
+        uses: crazy-max/ghaction-virustotal@v5
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: |
+            build/KO-Client.exe
+            build/KO-Client.zip
+          request_rate: 4
+          update_release_body: false
+        env:
+          VT_API_KEY: ${{ secrets.VT_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Append VirusTotal & SHA-256 to Release Notes
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.tag != ''
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $exeHash = (Get-FileHash -Path 'build\KO-Client.exe' -Algorithm SHA256).Hash.ToLower()
+          $zipHash = (Get-FileHash -Path 'build\KO-Client.zip' -Algorithm SHA256).Hash.ToLower()
+          $existing = gh release view $env:RELEASE_TAG --json body --jq '.body'
+          $lines = @(
+            '',
+            '### Verification (VirusTotal & SHA-256)',
+            '',
+            '| File | SHA-256 | VirusTotal |',
+            '| --- | --- | --- |',
+            ("| ``KO-Client.zip`` | ``$zipHash`` | [View report](https://www.virustotal.com/gui/file/$zipHash) |"),
+            ("| ``KO-Client.exe`` | ``$exeHash`` | [View report](https://www.virustotal.com/gui/file/$exeHash) |")
+          )
+          $newBody = $existing.TrimEnd() + "`n" + ($lines -join "`n")
+          gh release edit $env:RELEASE_TAG --notes $newBody
