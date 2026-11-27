@@ -10,7 +10,7 @@ ccflags = "-march=x86-64-v2 -mtune=skylake"
 deprecated = "no"
 accesskit = "no"
 angle = "no"
-d3d12 = "no"
+d3d12 = "yes"
 winrt = "no"
 
 disable_2d = "yes"

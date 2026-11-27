@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="KO Client - DEADSHOT.io"
-config/version="1.0.0"
+config/version="1.0.1"
 run/main_scene="res://boot/boot.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 boot_splash/bg_color=Color(0.055, 0.06, 0.075, 1)
@@ -50,7 +50,7 @@ common/enable_object_picking=false
 
 [rendering]
 
-rendering_device/driver.windows="vulkan"
+rendering_device/driver.windows="d3d12"
 rendering_device/vulkan/max_descriptors_per_pool=256
 renderer/rendering_method="mobile"
 textures/default_filters/use_nearest_mipmap_filter=true
